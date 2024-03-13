@@ -44,6 +44,10 @@ type ProviderVerifierOptions struct {
 	// When false, ID Token Issuers must match the OIDC discovery URL.
 	SkipIssuerVerification bool
 
+	// SkipExpiryVerification skips verification of ID token expiration.
+	// When false, ID Token must be still valid (up to 5 minutes after expiration).
+	SkipExpiryVerification bool
+
 	// SupportedSigningAlgs is the list of signature algorithms supported by the
 	// provider.
 	SupportedSigningAlgs []string
@@ -82,6 +86,7 @@ func (p ProviderVerifierOptions) toOIDCConfig() *oidc.Config {
 	return &oidc.Config{
 		ClientID:             p.ClientID,
 		SkipIssuerCheck:      p.SkipIssuerVerification,
+		SkipExpiryCheck:      true,
 		SkipClientIDCheck:    true,
 		SupportedSigningAlgs: p.SupportedSigningAlgs,
 	}
